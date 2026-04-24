@@ -24,9 +24,13 @@
         nav { max-width:1100px; margin:0 auto; padding:1.25rem 2rem; display:flex; justify-content:space-between; align-items:center; }
         .logo { font-size:1.4rem; font-weight:700; letter-spacing:-0.5px; color:var(--navy); }
         .logo span { color:var(--teal); }
-        nav ul { list-style:none; display:flex; gap:2rem; }
+        nav ul { list-style:none; display:flex; gap:2rem; align-items:center; }
         nav a { color:var(--text-muted); text-decoration:none; font-size:0.9rem; font-weight:500; transition:color 0.2s; }
         nav a:hover { color:var(--navy); }
+        .lang-toggle { display:flex; gap:0.25rem; background:var(--bg-alt); border:1px solid var(--border); border-radius:6px; padding:2px; margin-left:0.5rem; }
+        .lang-btn { padding:4px 10px; font-size:0.8rem; font-weight:600; border:none; background:none; cursor:pointer; border-radius:4px; color:var(--text-muted); transition:all 0.2s; font-family:inherit; }
+        .lang-btn.active { background:var(--teal); color:#fff; }
+        .lang-btn:hover:not(.active) { color:var(--navy); }
         .hero { max-width:1100px; margin:0 auto; padding:5rem 2rem 4rem; text-align:center; }
         .hero h1 { font-size:clamp(2.2rem,5vw,3.5rem); font-weight:800; letter-spacing:-1.5px; line-height:1.1; margin-bottom:1.5rem; color:var(--navy); }
         .hero h1 span { color:var(--teal); }
@@ -97,6 +101,7 @@
         <li><a href="#process">Process</a></li>
         <li><a href="#about">About</a></li>
         <li><a href="#contact">Contact</a></li>
+        <li><div class="lang-toggle"><button class="lang-btn active" data-lang="en">EN</button><button class="lang-btn" data-lang="es">ES</button></div></li>
     </ul>
 </nav>
 
@@ -246,7 +251,7 @@ document.getElementById('contactForm').addEventListener('submit', async function
     const btn = this.querySelector('.submit-btn');
     const status = document.getElementById('formStatus');
     btn.disabled = true;
-    btn.textContent = 'Sending...';
+    btn.textContent = TRANSLATIONS[window._currentLang||'en'].sendingBtn;
     status.textContent = '';
     status.className = 'form-status';
     try {
@@ -261,17 +266,216 @@ document.getElementById('contactForm').addEventListener('submit', async function
             })
         });
         if (response.ok) {
-            status.textContent = '✓ Message sent! We\'ll get back to you within 24 hours.';
+            status.textContent = TRANSLATIONS[window._currentLang||'en'].successMsg;
             status.className = 'form-status success';
             this.reset();
         } else { throw new Error('Failed'); }
     } catch (err) {
-        status.textContent = 'Something went wrong. Please email us at hello@inarna.com';
+        status.textContent = TRANSLATIONS[window._currentLang||'en'].errorMsg;
         status.className = 'form-status error';
     }
     btn.disabled = false;
-    btn.textContent = 'Send message';
+    btn.textContent = TRANSLATIONS[window._currentLang||'en'].submitBtn;
 });
+
+// ========== LANGUAGE SWITCHER ==========
+const TRANSLATIONS = {
+  en: {
+    tagline: 'AI Solutions for Growing Businesses',
+    heroTitle: 'Level up your business <span>with AI</span>',
+    heroDesc: 'We work with small businesses to find and implement the right AI tools that save time, cut costs, and unlock growth. Work smarter, not harder with AI that fits your business.',
+    cta: 'Free 30-minute consultation',
+    servicesTitle: 'What we do',
+    servicesSub: 'Practical AI solutions, not just strategy decks.',
+    stratTitle: 'AI Strategy',
+    stratDesc: 'We assess your operations and identify the best opportunities to put AI to work for you. No fluff, just clear, actionable recommendations.',
+    implTitle: 'Custom Implementation',
+    implDesc: 'We build and deploy AI solutions tailored to your business \u2014 chatbots, document processing, data analysis, and more.',
+    autoTitle: 'Process Automation',
+    autoDesc: 'Automate repetitive tasks with AI-powered workflows. Less manual work, fewer errors, faster results.',
+    processTitle: 'How it works',
+    processSub: 'Simple, transparent, results-driven.',
+    step1Title: 'Discovery Call',
+    step1Desc: 'We learn about your business, challenges, and goals. Free, no pressure.',
+    step2Title: 'AI Audit',
+    step2Desc: 'We analyze your workflows and identify the highest-impact AI opportunities.',
+    step3Title: 'Build & Deploy',
+    step3Desc: 'We implement the solution, test it, and integrate it into your operations.',
+    step4Title: 'Support & Scale',
+    step4Desc: 'Ongoing support, optimization, and training so you keep leveling up.',
+    aboutTitle: 'Built for SMBs',
+    aboutSub: 'Enterprise-grade AI without the enterprise price tag.',
+    aboutP1: 'Most AI consultants charge Fortune 500 prices and deliver slide decks. We\u2019re different. Inarna was built to bring real AI implementation to the businesses that need it most \u2014 small and mid-size companies that can\u2019t afford a 6-month consulting engagement.',
+    aboutP2: 'Based in Houston, Texas, we combine deep technical expertise with practical business sense. We don\u2019t just tell you what AI could do \u2014 we build it, deploy it, and make sure it works.',
+    aboutP3: 'Every project starts with a free consultation. No commitment, no pressure. Just an honest conversation about whether AI can actually help your business.',
+    statFree: 'Free', statFreeLabel: 'Initial consultation',
+    stat100: '100%', stat100Label: 'US-based',
+    statHou: 'Houston', statHouLabel: 'Texas, USA',
+    statReal: 'Real', statRealLabel: 'Implementation, not decks',
+    contactTitle: "Let's talk",
+    contactSub: 'Free 30-minute consultation. No strings attached.',
+    contactH3: 'Ready to level up?',
+    contactP: 'Tell us about your business and what you\u2019re looking to improve. We\u2019ll respond within 24 hours to schedule your free 30-minute call. An honest assessment of how AI can help \u2014 even if that means telling you it can\u2019t.',
+    labelName: 'Name', placeholderName: 'Your name',
+    labelEmail: 'Email', placeholderEmail: 'you@company.com',
+    labelInterest: 'What interests you?',
+    interestDefault: 'Select one...',
+    interestStrategy: 'AI Strategy',
+    interestImpl: 'Custom Implementation',
+    interestAuto: 'Process Automation',
+    interestTraining: 'Team Training',
+    interestOther: 'Not sure yet',
+    labelMessage: 'Tell us about your business',
+    placeholderMessage: 'What does your company do? What challenges are you facing?',
+    submitBtn: 'Send message',
+    sendingBtn: 'Sending...',
+    successMsg: '\u2713 Message sent! We\'ll get back to you within 24 hours.',
+    errorMsg: 'Something went wrong. Please email us at hello@inarna.com',
+    footerCopy: '\u00a9 2026 Inarna, a Level Up AI LLC company',
+    footerLoc: 'Houston, TX',
+    navServices: 'Services', navProcess: 'Process', navAbout: 'About', navContact: 'Contact'
+  },
+  es: {
+    tagline: 'Soluciones de IA para empresas en crecimiento',
+    heroTitle: 'Lleva tu negocio al <span>siguiente nivel con IA</span>',
+    heroDesc: 'Trabajamos con peque\u00f1as empresas para encontrar e implementar las herramientas de IA adecuadas que ahorran tiempo, reducen costos y generan crecimiento. Trabaja m\u00e1s inteligente, no m\u00e1s duro con IA que se adapta a tu negocio.',
+    cta: 'Consulta gratuita de 30 minutos',
+    servicesTitle: 'Lo que hacemos',
+    servicesSub: 'Soluciones pr\u00e1cticas de IA, no solo presentaciones.',
+    stratTitle: 'Estrategia de IA',
+    stratDesc: 'Evaluamos tus operaciones e identificamos las mejores oportunidades para poner la IA a trabajar para ti. Sin relleno, solo recomendaciones claras y accionables.',
+    implTitle: 'Implementaci\u00f3n Personalizada',
+    implDesc: 'Construimos e implementamos soluciones de IA adaptadas a tu negocio: chatbots, procesamiento de documentos, an\u00e1lisis de datos y m\u00e1s.',
+    autoTitle: 'Automatizaci\u00f3n de Procesos',
+    autoDesc: 'Automatiza tareas repetitivas con flujos de trabajo impulsados por IA. Menos trabajo manual, menos errores, resultados m\u00e1s r\u00e1pidos.',
+    processTitle: 'C\u00f3mo funciona',
+    processSub: 'Simple, transparente, orientado a resultados.',
+    step1Title: 'Llamada de Descubrimiento',
+    step1Desc: 'Conocemos tu negocio, desaf\u00edos y objetivos. Gratis, sin presi\u00f3n.',
+    step2Title: 'Auditor\u00eda de IA',
+    step2Desc: 'Analizamos tus flujos de trabajo e identificamos las oportunidades de IA de mayor impacto.',
+    step3Title: 'Construir e Implementar',
+    step3Desc: 'Implementamos la soluci\u00f3n, la probamos y la integramos en tus operaciones.',
+    step4Title: 'Soporte y Escalamiento',
+    step4Desc: 'Soporte continuo, optimizaci\u00f3n y capacitaci\u00f3n para que sigas creciendo.',
+    aboutTitle: 'Dise\u00f1ado para PyMEs',
+    aboutSub: 'IA de nivel empresarial sin precios empresariales.',
+    aboutP1: 'La mayor\u00eda de los consultores de IA cobran precios Fortune 500 y entregan presentaciones. Somos diferentes. Inarna fue creada para llevar implementaci\u00f3n real de IA a las empresas que m\u00e1s la necesitan: peque\u00f1as y medianas empresas que no pueden permitir un compromiso de consultor\u00eda de 6 meses.',
+    aboutP2: 'Basados en Houston, Texas, combinamos experiencia t\u00e9cnica profunda con sentido pr\u00e1ctico de negocio. No solo te decimos qu\u00e9 podr\u00eda hacer la IA, la construimos, la implementamos y nos aseguramos de que funcione.',
+    aboutP3: 'Cada proyecto comienza con una consulta gratuita. Sin compromiso, sin presi\u00f3n. Solo una conversaci\u00f3n honesta sobre si la IA realmente puede ayudar a tu negocio.',
+    statFree: 'Gratis', statFreeLabel: 'Consulta inicial',
+    stat100: '100%', stat100Label: 'Basados en EE.UU.',
+    statHou: 'Houston', statHouLabel: 'Texas, EE.UU.',
+    statReal: 'Real', statRealLabel: 'Implementaci\u00f3n, no presentaciones',
+    contactTitle: 'Hablemos',
+    contactSub: 'Consulta gratuita de 30 minutos. Sin compromiso.',
+    contactH3: '\u00bfListo para crecer?',
+    contactP: 'Cu\u00e9ntanos sobre tu negocio y qu\u00e9 quieres mejorar. Responderemos en 24 horas para programar tu llamada gratuita de 30 minutos. Una evaluaci\u00f3n honesta de c\u00f3mo la IA puede ayudarte, incluso si eso significa decirte que no puede.',
+    labelName: 'Nombre', placeholderName: 'Tu nombre',
+    labelEmail: 'Correo electr\u00f3nico', placeholderEmail: 'tu@empresa.com',
+    labelInterest: '\u00bfQu\u00e9 te interesa?',
+    interestDefault: 'Selecciona uno...',
+    interestStrategy: 'Estrategia de IA',
+    interestImpl: 'Implementaci\u00f3n Personalizada',
+    interestAuto: 'Automatizaci\u00f3n de Procesos',
+    interestTraining: 'Capacitaci\u00f3n de Equipo',
+    interestOther: 'No estoy seguro todav\u00eda',
+    labelMessage: 'Cu\u00e9ntanos sobre tu negocio',
+    placeholderMessage: '\u00bfQu\u00e9 hace tu empresa? \u00bfQu\u00e9 desaf\u00edos enfrentas?',
+    submitBtn: 'Enviar mensaje',
+    sendingBtn: 'Enviando...',
+    successMsg: '\u2713 \u00a1Mensaje enviado! Te responderemos en 24 horas.',
+    errorMsg: 'Algo sali\u00f3 mal. Escr\u00edenos a hello@inarna.com',
+    footerCopy: '\u00a9 2026 Inarna, una empresa de Level Up AI LLC',
+    footerLoc: 'Houston, TX',
+    navServices: 'Servicios', navProcess: 'Proceso', navAbout: 'Nosotros', navContact: 'Contacto'
+  }
+};
+
+function setLang(lang) {
+  const t = TRANSLATIONS[lang];
+  document.documentElement.lang = lang;
+  document.querySelector('.tagline').textContent = t.tagline;
+  document.querySelector('.hero h1').innerHTML = t.heroTitle;
+  document.querySelector('.hero p').textContent = t.heroDesc;
+  document.querySelector('.cta-btn').textContent = t.cta;
+  document.querySelector('#services h2').textContent = t.servicesTitle;
+  document.querySelector('#services .section-sub').textContent = t.servicesSub;
+  const cards = document.querySelectorAll('.service-card');
+  cards[0].querySelector('h3').textContent = t.stratTitle;
+  cards[0].querySelector('p').textContent = t.stratDesc;
+  cards[1].querySelector('h3').textContent = t.implTitle;
+  cards[1].querySelector('p').textContent = t.implDesc;
+  cards[2].querySelector('h3').textContent = t.autoTitle;
+  cards[2].querySelector('p').textContent = t.autoDesc;
+  const bgAlt = document.querySelectorAll('.bg-alt-inner');
+  bgAlt[0].querySelector('h2').textContent = t.processTitle;
+  bgAlt[0].querySelector('.section-sub').textContent = t.processSub;
+  const steps = document.querySelectorAll('.step');
+  steps[0].querySelector('h3').textContent = t.step1Title;
+  steps[0].querySelector('p').textContent = t.step1Desc;
+  steps[1].querySelector('h3').textContent = t.step2Title;
+  steps[1].querySelector('p').textContent = t.step2Desc;
+  steps[2].querySelector('h3').textContent = t.step3Title;
+  steps[2].querySelector('p').textContent = t.step3Desc;
+  steps[3].querySelector('h3').textContent = t.step4Title;
+  steps[3].querySelector('p').textContent = t.step4Desc;
+  document.querySelector('#about h2').textContent = t.aboutTitle;
+  document.querySelector('#about .section-sub').textContent = t.aboutSub;
+  const aboutPs = document.querySelectorAll('#about .about-content > div:first-child p');
+  aboutPs[0].textContent = t.aboutP1;
+  aboutPs[1].textContent = t.aboutP2;
+  aboutPs[2].textContent = t.aboutP3;
+  const stats = document.querySelectorAll('.stat');
+  stats[0].querySelector('.number').textContent = t.statFree;
+  stats[0].querySelector('.label').textContent = t.statFreeLabel;
+  stats[1].querySelector('.number').textContent = t.stat100;
+  stats[1].querySelector('.label').textContent = t.stat100Label;
+  stats[2].querySelector('.number').textContent = t.statHou;
+  stats[2].querySelector('.label').textContent = t.statHouLabel;
+  stats[3].querySelector('.number').textContent = t.statReal;
+  stats[3].querySelector('.label').textContent = t.statRealLabel;
+  bgAlt[1].querySelector('h2').textContent = t.contactTitle;
+  bgAlt[1].querySelector('.section-sub').textContent = t.contactSub;
+  document.querySelector('.contact-info h3').textContent = t.contactH3;
+  document.querySelector('.contact-info > p').textContent = t.contactP;
+  const form = document.getElementById('contactForm');
+  form.querySelector('label[for="name"]').textContent = t.labelName;
+  form.querySelector('#name').placeholder = t.placeholderName;
+  form.querySelector('label[for="email"]').textContent = t.labelEmail;
+  form.querySelector('#email').placeholder = t.placeholderEmail;
+  form.querySelector('label[for="interest"]').textContent = t.labelInterest;
+  const opts = form.querySelectorAll('#interest option');
+  opts[0].textContent = t.interestDefault;
+  opts[1].textContent = t.interestStrategy;
+  opts[2].textContent = t.interestImpl;
+  opts[3].textContent = t.interestAuto;
+  opts[4].textContent = t.interestTraining;
+  opts[5].textContent = t.interestOther;
+  form.querySelector('label[for="message"]').textContent = t.labelMessage;
+  form.querySelector('#message').placeholder = t.placeholderMessage;
+  form.querySelector('.submit-btn').textContent = t.submitBtn;
+  const navLinks = document.querySelectorAll('nav ul li a');
+  navLinks[0].textContent = t.navServices;
+  navLinks[1].textContent = t.navProcess;
+  navLinks[2].textContent = t.navAbout;
+  navLinks[3].textContent = t.navContact;
+  const footerSpans = document.querySelectorAll('footer span');
+  footerSpans[0].textContent = t.footerCopy;
+  footerSpans[1].textContent = t.footerLoc;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
+  localStorage.setItem('inarna-lang', lang);
+  // Update form submit button text reference
+  window._currentLang = lang;
+}
+
+document.querySelectorAll('.lang-btn').forEach(btn => {
+  btn.addEventListener('click', () => setLang(btn.dataset.lang));
+});
+
+// Restore saved language
+const savedLang = localStorage.getItem('inarna-lang');
+if (savedLang && savedLang !== 'en') setLang(savedLang);
 </script>
 
 </body>
