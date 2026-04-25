@@ -255,15 +255,24 @@ document.getElementById('contactForm').addEventListener('submit', async function
     status.textContent = '';
     status.className = 'form-status';
     try {
+        const formData = {
+            name: this.name.value,
+            email: this.email.value,
+            company: this.company ? this.company.value : '',
+            interest: this.interest.value,
+            message: this.message.value
+        };
+        // Send to n8n webhook (primary - real-time automation)
+        fetch('https://n8n.inarna.com/webhook/inarna-lead', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formData)
+        }).catch(() => {});
+        // Send to Formspree (backup)
         const response = await fetch('https://formspree.io/f/mdaybklk', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-            body: JSON.stringify({
-                name: this.name.value,
-                email: this.email.value,
-                interest: this.interest.value,
-                message: this.message.value
-            })
+            body: JSON.stringify(formData)
         });
         if (response.ok) {
             status.textContent = TRANSLATIONS[window._currentLang||'en'].successMsg;
