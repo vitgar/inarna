@@ -218,6 +218,10 @@
                         <input type="email" id="email" name="email" required placeholder="you@company.com">
                     </div>
                     <div class="form-group">
+                        <label for="company">Company</label>
+                        <input type="text" id="company" name="company" placeholder="Your company name (optional)">
+                    </div>
+                    <div class="form-group">
                         <label for="interest">What interests you?</label>
                         <select id="interest" name="interest">
                             <option value="">Select one...</option>
@@ -340,6 +344,7 @@ const TRANSLATIONS = {
     interestAuto: 'Process Automation',
     interestTraining: 'Team Training',
     interestOther: 'Not sure yet',
+    labelCompany: 'Company', placeholderCompany: 'Your company name (optional)',
     labelMessage: 'Tell us about your business',
     placeholderMessage: 'What does your company do? What challenges are you facing?',
     submitBtn: 'Send message',
@@ -395,6 +400,7 @@ const TRANSLATIONS = {
     interestAuto: 'Automatizaci\u00f3n de Procesos',
     interestTraining: 'Capacitaci\u00f3n de Equipo',
     interestOther: 'Quiero explorar opciones',
+    labelCompany: 'Empresa', placeholderCompany: 'Nombre de tu empresa (opcional)',
     labelMessage: 'Cu\u00e9ntanos sobre tu negocio',
     placeholderMessage: '\u00bfQu\u00e9 hace tu empresa? \u00bfQu\u00e9 desaf\u00edos enfrentas?',
     submitBtn: 'Enviar mensaje',
@@ -459,6 +465,8 @@ function setLang(lang) {
   form.querySelector('#name').placeholder = t.placeholderName;
   form.querySelector('label[for="email"]').textContent = t.labelEmail;
   form.querySelector('#email').placeholder = t.placeholderEmail;
+  form.querySelector('label[for="company"]').textContent = t.labelCompany;
+  form.querySelector('#company').placeholder = t.placeholderCompany;
   form.querySelector('label[for="interest"]').textContent = t.labelInterest;
   const opts = form.querySelectorAll('#interest option');
   opts[0].textContent = t.interestDefault;
